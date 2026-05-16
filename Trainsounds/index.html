@@ -1,0 +1,629 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GOPO Trains Soundboard</title>
+
+  <style>
+    a:link {
+      color: lightblue;
+      background-color: transparent;
+      text-decoration: none;
+    }
+
+    a:visited {
+      color: lightblue;
+      background-color: transparent;
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: blue;
+      background-color: transparent;
+      text-decoration: underline;
+    }
+
+    a:active {
+      color: blue;
+      background-color: transparent;
+      text-decoration: underline;
+    }
+
+    :root {
+      --wood-dark: #2a1a10;
+      --wood-mid: #3a2416;
+      --wood-light: #5a3b24;
+
+      --brass: #c9a45a;
+      --brass-dark: #8b6a2f;
+
+      --cream: #f4e8d2;
+      --ink: #1a120c;
+      --loop-active: #6ea04b;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--cream);
+
+      background:
+        linear-gradient(90deg,
+          rgba(0,0,0,0.25),
+          rgba(0,0,0,0.05),
+          rgba(0,0,0,0.25)
+        ),
+        repeating-linear-gradient(
+          90deg,
+          #2b1a10 0px,
+          #2b1a10 70px,
+          #321f13 70px,
+          #321f13 140px
+        ),
+        radial-gradient(circle at 30% 20%, rgba(255,220,140,0.12), transparent 60%),
+        radial-gradient(circle at 70% 80%, rgba(255,220,140,0.08), transparent 60%);
+      min-height: 100vh;
+    }
+
+    header {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 18px 16px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 22px;
+      letter-spacing: 1px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--cream);
+      text-shadow: 2px 2px 0 rgba(0,0,0,0.6);
+    }
+
+    .controls {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+      font-size: 13px;
+      color: rgba(244,232,210,0.85);
+    }
+
+    .controls input[type="range"] {
+      width: 150px;
+      accent-color: var(--brass);
+    }
+
+    .controls button {
+      border: 2px solid var(--brass-dark);
+      background: linear-gradient(180deg, #e2c27a, #b68b3e);
+      color: #2a1a10;
+      padding: 8px 12px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 700;
+      font-family: Georgia, serif;
+      box-shadow: 0 4px 0 #5a3b24, 0 10px 18px rgba(0,0,0,0.45);
+      transition: transform 0.08s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .controls button:hover { filter: brightness(1.05); }
+
+    .controls button:active {
+      transform: translateY(2px);
+      box-shadow: 0 2px 0 #5a3b24, 0 7px 12px rgba(0,0,0,0.35);
+    }
+
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 10px 16px 28px;
+    }
+
+    .board {
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(0,0,0,0.1));
+      border: 3px solid rgba(201,164,90,0.7);
+      border-radius: 22px;
+      padding: 18px;
+      box-shadow: inset 0 0 0 2px rgba(0,0,0,0.35),
+                  0 16px 30px rgba(0,0,0,0.6);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    @media (max-width: 900px) {
+      .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 520px) {
+      .grid { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+    }
+
+    .pad {
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(0,0,0,0.12)),
+                  radial-gradient(circle at 30% 20%, rgba(255,220,140,0.10), transparent 60%);
+      border: 2px solid rgba(201,164,90,0.55);
+      border-radius: 18px;
+      padding: 14px;
+      box-shadow: inset 0 0 0 2px rgba(0,0,0,0.35),
+                  0 10px 20px rgba(0,0,0,0.45);
+      display: grid;
+      gap: 10px;
+    }
+
+    .pad button.play {
+      width: 100%;
+      border: 2px solid rgba(0,0,0,0.55);
+      border-radius: 16px;
+      padding: 14px 12px;
+      cursor: pointer;
+      font-weight: 800;
+      font-size: 14px;
+      font-family: Georgia, serif;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #2a1a10;
+      background: radial-gradient(circle at 30% 25%, #ffe7b0, #c79f55);
+      box-shadow: 0 6px 0 #5a3b24, 0 14px 20px rgba(0,0,0,0.55);
+      transition: transform 0.08s ease, outline 0.12s ease;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .pad button.play:hover { filter: brightness(1.05); }
+
+    .pad button.play:active {
+      transform: translateY(3px);
+      box-shadow: 0 3px 0 #5a3b24, 0 10px 14px rgba(0,0,0,0.45);
+    }
+
+    .pad button.play.loop-active {
+      outline: 3px solid var(--loop-active);
+      outline-offset: 2px;
+    }
+
+    .btn-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      object-fit: cover;
+      flex: 0 0 auto;
+      background: rgba(0,0,0,0.15);
+    }
+
+    .label {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+    }
+
+    .meta {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      font-size: 12px;
+      color: rgba(244,232,210,0.8);
+      min-height: 16px;
+    }
+
+    .note {
+      margin-top: 12px;
+      font-size: 12px;
+      color: rgba(244,232,210,0.75);
+      line-height: 1.5;
+      font-style: italic;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 16px;
+      transform: translateX(-50%);
+      background: linear-gradient(180deg, #e2c27a, #b68b3e);
+      border: 2px solid #5a3b24;
+      color: #2a1a10;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .18s ease;
+      box-shadow: 0 10px 18px rgba(0,0,0,0.5);
+    }
+
+    .toast.show { opacity: 1; }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>GOPO Trains Soundboard</h1>
+
+    <div class="controls">
+      <span>Volume</span>
+      <input id="volume" type="range" min="0" max="1" step="0.01" value="0.9" />
+      <button id="stopAll" type="button">Stop</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="board">
+      <div id="grid" class="grid"></div>
+    </div>
+
+    <div class="note">
+      Contact <a href="https://www.gopotrains.com" target="_blank" rel="noopener noreferrer">GOPO Trains</a> for additional sound requests or inquiries.
+    </div>
+  </main>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    const FALLBACK_ICON = "icons/default.png";
+
+    const AMBIANCE_SOUNDS = [
+      "sounds/ChooChoo.wav",
+      "sounds/bell.wav",
+      "sounds/steam.wav",
+      "sounds/Aboard.wav"
+    ];
+
+    const AMBIANCE_DURATIONS_MS = [15000, 10000, 5000];
+
+    const pads = [
+      { name: "Choo Choo!", sound: "sounds/ChooChoo.wav", icon: "icons/whistle.png" },
+      { name: "Bell", sound: "sounds/bell.wav", icon: "icons/bell.png" },
+      { name: "Steam", sound: "sounds/steam.wav", icon: "icons/steam.png" },
+      { name: "All Aboard", sound: "sounds/Aboard.wav", icon: "icons/conductor.png" },
+      { name: "Engine", sound: "sounds/bell.wav", icon: "icons/chug.png", loop: true },
+      { name: "Brakes", sound: "sounds/brakes.wav", icon: "icons/brakes.png" },
+      { name: "Auto", icon: "icons/ambiance.png", ambiance: true }
+    ];
+
+    const grid = document.getElementById("grid");
+    const volumeSlider = document.getElementById("volume");
+    const stopAllBtn = document.getElementById("stopAll");
+    const toastEl = document.getElementById("toast");
+
+    let globalVolume = Number(volumeSlider.value);
+    const activeAudios = new Set();
+    const loopAudios = new Map();
+
+    let ambianceEnabled = false;
+    let currentAmbianceAudio = null;
+    let currentAmbianceTimeout = null;
+    let lastAmbianceSound = null;
+
+    function toast(msg) {
+      toastEl.textContent = msg;
+      toastEl.classList.add("show");
+      clearTimeout(toastEl._t);
+      toastEl._t = setTimeout(() => toastEl.classList.remove("show"), 1400);
+    }
+
+    function getRandomItem(items) {
+      return items[Math.floor(Math.random() * items.length)];
+    }
+
+    function getRandomAmbianceSound() {
+      if (!AMBIANCE_SOUNDS.length) return null;
+
+      if (AMBIANCE_SOUNDS.length === 1) {
+        return AMBIANCE_SOUNDS[0];
+      }
+
+      let nextSound = getRandomItem(AMBIANCE_SOUNDS);
+      while (nextSound === lastAmbianceSound) {
+        nextSound = getRandomItem(AMBIANCE_SOUNDS);
+      }
+      return nextSound;
+    }
+
+    function clearAmbianceTimer() {
+      if (currentAmbianceTimeout) {
+        clearTimeout(currentAmbianceTimeout);
+        currentAmbianceTimeout = null;
+      }
+    }
+
+    function stopLoop(padName) {
+      const audio = loopAudios.get(padName);
+      if (!audio) return;
+
+      try {
+        audio.pause();
+        audio.currentTime = 0;
+      } catch {}
+
+      activeAudios.delete(audio);
+      loopAudios.delete(padName);
+    }
+
+    function stopAmbiance() {
+      ambianceEnabled = false;
+      clearAmbianceTimer();
+
+      if (currentAmbianceAudio) {
+        try {
+          currentAmbianceAudio.pause();
+          currentAmbianceAudio.currentTime = 0;
+        } catch {}
+        activeAudios.delete(currentAmbianceAudio);
+        currentAmbianceAudio = null;
+      }
+    }
+
+    function scheduleNextAmbiance() {
+      if (!ambianceEnabled) return;
+
+      const nextSound = getRandomAmbianceSound();
+      if (!nextSound) {
+        toast("No ambiance sounds linked.");
+        ambianceEnabled = false;
+        render();
+        return;
+      }
+
+      const durationMs = getRandomItem(AMBIANCE_DURATIONS_MS);
+      const audio = new Audio(nextSound);
+      audio.volume = globalVolume;
+      currentAmbianceAudio = audio;
+      lastAmbianceSound = nextSound;
+
+      audio.addEventListener("error", () => {
+        console.error("Ambiance audio error:", audio.src, audio.error);
+        activeAudios.delete(audio);
+        if (currentAmbianceAudio === audio) {
+          currentAmbianceAudio = null;
+        }
+        if (ambianceEnabled) {
+          scheduleNextAmbiance();
+        }
+      });
+
+      audio.addEventListener("ended", () => {
+        activeAudios.delete(audio);
+        if (currentAmbianceAudio === audio) {
+          currentAmbianceAudio = null;
+        }
+      });
+
+      audio.play()
+        .then(() => {
+          activeAudios.add(audio);
+          render();
+
+          currentAmbianceTimeout = setTimeout(() => {
+            if (currentAmbianceAudio === audio) {
+              try {
+                audio.pause();
+                audio.currentTime = 0;
+              } catch {}
+              activeAudios.delete(audio);
+              currentAmbianceAudio = null;
+            }
+
+            if (ambianceEnabled) {
+              scheduleNextAmbiance();
+            }
+          }, durationMs);
+        })
+        .catch((e) => {
+          console.error("Ambiance play failed:", e);
+          activeAudios.delete(audio);
+          currentAmbianceAudio = null;
+          ambianceEnabled = false;
+          render();
+          toast("Ambiance failed");
+        });
+    }
+
+    function toggleAmbiance() {
+      if (ambianceEnabled) {
+        stopAmbiance();
+        render();
+        toast("Ambiance stopped");
+        return;
+      }
+
+      ambianceEnabled = true;
+      scheduleNextAmbiance();
+      render();
+      toast("Ambiance started");
+    }
+
+    function stopAll() {
+      stopAmbiance();
+
+      for (const a of activeAudios) {
+        try {
+          a.pause();
+          a.currentTime = 0;
+        } catch {}
+      }
+
+      activeAudios.clear();
+      loopAudios.clear();
+      render();
+      toast("All sounds stopped");
+    }
+
+    function playSound(pad) {
+      if (pad.ambiance) {
+        toggleAmbiance();
+        return;
+      }
+
+      if (!pad.sound) {
+        toast("No sound file linked.");
+        return;
+      }
+
+      if (pad.loop) {
+        const existingLoop = loopAudios.get(pad.name);
+
+        if (existingLoop) {
+          stopLoop(pad.name);
+          render();
+          toast(`${pad.name} stopped`);
+          return;
+        }
+
+        const audio = new Audio(pad.sound);
+        audio.volume = globalVolume;
+        audio.loop = true;
+
+        audio.addEventListener("error", () => {
+          console.error("Loop audio error:", audio.src, audio.error);
+          toast("Loop sound failed");
+        });
+
+        audio.play()
+          .then(() => {
+            activeAudios.add(audio);
+            loopAudios.set(pad.name, audio);
+            render();
+            toast(`${pad.name} started`);
+          })
+          .catch((e) => {
+            console.error("Loop play failed:", e);
+            toast("Audio blocked by browser.");
+          });
+
+        return;
+      }
+
+      const audio = new Audio(pad.sound);
+      audio.volume = globalVolume;
+
+      audio.addEventListener("ended", () => activeAudios.delete(audio));
+      audio.addEventListener("pause", () => activeAudios.delete(audio));
+      audio.addEventListener("error", () => {
+        console.error("Audio error:", audio.src, audio.error);
+        toast("Sound failed");
+      });
+
+      activeAudios.add(audio);
+      audio.play().catch((e) => {
+        console.error("Play failed:", e);
+        toast("Audio blocked by browser.");
+      });
+    }
+
+    function render() {
+      grid.innerHTML = "";
+
+      pads.forEach((pad) => {
+        const card = document.createElement("div");
+        card.className = "pad";
+
+        const playBtn = document.createElement("button");
+        playBtn.className = "play";
+        playBtn.type = "button";
+
+        const isLoopActive = loopAudios.has(pad.name);
+        const isAmbianceActive = pad.ambiance && ambianceEnabled;
+
+        if (isLoopActive || isAmbianceActive) {
+          playBtn.classList.add("loop-active");
+        }
+
+        const left = document.createElement("span");
+        left.className = "btn-left";
+
+        const img = document.createElement("img");
+        img.className = "icon";
+        img.alt = "";
+        img.src = pad.icon || FALLBACK_ICON;
+
+        img.onerror = () => {
+          if (img.src.includes(FALLBACK_ICON)) return;
+          img.src = FALLBACK_ICON;
+        };
+
+        const label = document.createElement("span");
+        label.className = "label";
+
+        if (pad.loop) {
+          label.textContent = `${pad.name} ${isLoopActive ? "ON" : "OFF"}`;
+        } else if (pad.ambiance) {
+          label.textContent = `${pad.name} ${isAmbianceActive ? "ON" : "OFF"}`;
+        } else {
+          label.textContent = pad.name;
+        }
+
+        left.append(img, label);
+
+        const right = document.createElement("span");
+        if (pad.loop) {
+          right.textContent = isLoopActive ? "■" : "▶";
+        } else if (pad.ambiance) {
+          right.textContent = isAmbianceActive ? "■" : "▶";
+        } else {
+          right.textContent = "▶";
+        }
+
+        playBtn.append(left, right);
+        playBtn.addEventListener("click", () => playSound(pad));
+
+        const meta = document.createElement("div");
+        meta.className = "meta";
+        if (pad.loop) {
+          meta.textContent = isLoopActive ? "Looping" : "Toggle Loop";
+        } else if (pad.ambiance) {
+          meta.textContent = isAmbianceActive ? "On" : "Off";
+        } else {
+          meta.textContent = "";
+        }
+
+        card.append(playBtn, meta);
+        grid.append(card);
+      });
+    }
+
+    volumeSlider.addEventListener("input", () => {
+      globalVolume = Number(volumeSlider.value);
+
+      for (const audio of loopAudios.values()) {
+        audio.volume = globalVolume;
+      }
+
+      if (currentAmbianceAudio) {
+        currentAmbianceAudio.volume = globalVolume;
+      }
+    });
+
+    stopAllBtn.addEventListener("click", stopAll);
+
+    render();
+  </script>
+</body>
+</html>
